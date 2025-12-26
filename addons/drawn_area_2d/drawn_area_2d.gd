@@ -32,7 +32,7 @@ func _ready() -> void:
 	if not Engine.is_editor_hint():
 		queue_redraw()
 
-func _draw():
+func _draw() -> void:
 	for child in find_children("*", "CollisionShape2D", false, false):
 		RenderingServer.canvas_item_clear(child.get_canvas_item())
 		child.shape.draw(child.get_canvas_item(), color)
@@ -50,15 +50,15 @@ func _draw():
 			RenderingServer.canvas_item_add_polyline(child.get_canvas_item(), child.polygon, ca)
 			# Connect the start of the polyline to the end.
 			RenderingServer.canvas_item_add_line(child.get_canvas_item(),
-												 child.polygon[-1],
-												 child.polygon[0],
-												 c
+												child.polygon[-1],
+												child.polygon[0],
+												c
 												)
 
-func _process(_delta:float):
+func _process(_delta:float) -> void:
 	if not Engine.is_editor_hint():
 		queue_redraw()
 
-func _physics_process(_delta:float):
+func _physics_process(_delta:float) -> void:
 	if not Engine.is_editor_hint():
 		queue_redraw()
