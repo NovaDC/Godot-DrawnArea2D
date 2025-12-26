@@ -44,38 +44,41 @@ func _ready() -> void:
 		queue_redraw()
 
 func _draw() -> void:
-	for child in find_children("*", "CollisionShape2D", false, false):
-		RenderingServer.canvas_item_clear(child.get_canvas_item())
-		child.shape.draw(child.get_canvas_item(), color)
+	for i in get_child_count(true):
+		var child := get_child(i)
+
+		if not (child is CollisionShape2D or child is CollisionPolygon2D):
+			continue
+
 		if only_visible and not child.visible:
 			continue
 
 		if only_enabled and child.disabled:
 			continue
 
-	for child in find_children("*", "CollisionPolygon2D", false, false):
-		RenderingServer.canvas_item_clear(child.get_canvas_item())
-		if only_visible and not child.visible:
-			continue
+		var canvas_item:RID = child.get_canvas_item()
 
-		if only_enabled and child.disabled:
-			continue
-		var color_array := PackedColorArray()
-		color_array.resize(child.polygon.size())
-		color_array.fill(color)
-		RenderingServer.canvas_item_add_polygon(child.get_canvas_item(), child.polygon, color_array)
-		if color.a < 1:
-			var c := Color(color, 1)
-			var ca := PackedColorArray()
-			ca.resize(child.polygon.size())
-			ca.fill(c)
-			RenderingServer.canvas_item_add_polyline(child.get_canvas_item(), child.polygon, ca)
-			# Connect the start of the polyline to the end.
-			RenderingServer.canvas_item_add_line(child.get_canvas_item(),
-												child.polygon[-1],
-												child.polygon[0],
-												c
-												)
+		RenderingServer.canvas_item_clear(canvas_item)
+
+		if child is CollisionShape2D:
+			child.shape.draw(canvas_item, color)
+		else:
+			var poly:PackedVector2Array = child.polygon
+
+			var color_array := PackedColorArray()
+			color_array.resize(poly.size())
+			color_array.fill(color)
+
+			RenderingServer.canvas_item_add_polygon(canvas_item, poly, color_array)
+
+			if color.a < 1:
+				var color_op := Color(color, 1)
+				var color_array_op := PackedColorArray()
+				color_array_op.resize(poly.size())
+				color_array_op.fill(color_op)
+				RenderingServer.canvas_item_add_polyline(canvas_item, poly, color_array_op)
+				# Connect the start of the polyline to the end.
+				RenderingServer.canvas_item_add_line(canvas_item, poly[-1], poly[0], color_op)
 
 func _process(_delta:float) -> void:
 	if not Engine.is_editor_hint():
