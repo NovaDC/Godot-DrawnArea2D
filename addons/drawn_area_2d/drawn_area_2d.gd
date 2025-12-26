@@ -16,6 +16,15 @@ extends Area2D
 ## This behaviour replicates the drawing done in editor.
 @export var color := Color.BLACK
 
+## When set, only [CollisionShape2D]s/[CollisionPolygon2D]s that aren't
+## [member CollisionShape2D.disabled]/[member CollisionPolygon2D.disabled]
+## will be drawn.
+@export var only_enabled := true
+
+## When set, only [CollisionShape2D]s/[CollisionPolygon2D]s that are
+## [member Node2D.visible] will be drawn.
+@export var only_visible := true
+
 ## Redraw the shapes every processed frame.
 ## May help fix the drawn area not properly matching the current location of the area, when set,
 ## though increases rendering load.[br]
@@ -38,8 +47,19 @@ func _draw() -> void:
 	for child in find_children("*", "CollisionShape2D", false, false):
 		RenderingServer.canvas_item_clear(child.get_canvas_item())
 		child.shape.draw(child.get_canvas_item(), color)
+		if only_visible and not child.visible:
+			continue
+
+		if only_enabled and child.disabled:
+			continue
+
 	for child in find_children("*", "CollisionPolygon2D", false, false):
 		RenderingServer.canvas_item_clear(child.get_canvas_item())
+		if only_visible and not child.visible:
+			continue
+
+		if only_enabled and child.disabled:
+			continue
 		var color_array := PackedColorArray()
 		color_array.resize(child.polygon.size())
 		color_array.fill(color)
