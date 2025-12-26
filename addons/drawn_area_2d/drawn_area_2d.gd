@@ -3,29 +3,30 @@ extends Area2D
 
 ## DrawnArea2D
 ##
-## A [Area2D] with the ability to draw it's [CollisionShape2D]s and [CollisionPolygon2D]s
-## even when not in the editor.[br]
+## An [Area2D] with the ability to draw it's [CollisionShape2D]s and [CollisionPolygon2D]s
+## outside of a debugging context.[br]
 ## It's safe to disable [member redraw_on_frame] and [member redraw_on_physics] and/or
-## use [method queue_redraw] to manually redraw this node without issue.
+## use [method queue_redraw] to manually redraw this node.
 
-## The [Color] to draw the shapes with. The area of the shape will be filled with this exact color,
-## and the edges of the shapes will be drawn win this color, but ignoring it's alpha value,
-## forcing it to [code]1.0[/code], maximum opacity.[br]
+## The [Color] to draw the shapes with.[br]
+## The area of the shape will be filled with this exact color,
+## and the edges of the shapes will be drawn using a color with the same
+## red, green, and blue values, but at maximum opacity (alpha).[br]
 ## This behaviour replicates the drawing done in editor.
 @export var color := Color.BLACK
 
 ## Redraw the shapes every processed frame.
 ## May help fix the drawn area not properly matching the current location of the area, when set,
 ## though increases rendering load.[br]
-## NOTE at least this or [member redraw_on_physics] must be [code]true[/code]
-## for this area to be drawn.
+## [b]NOTE[/b]: at least this or [member redraw_on_physics] must be set
+## for this area to be drawn automatically.
 @export var redraw_on_frame := true
 
 ## Redraw the shapes every processed physics frame.
 ## May help fix the drawn area not properly matching the current location of the area, when set,
 ## though increases rendering load.[br]
-## NOTE at least this or [member redraw_on_frame] must be [code]true[/code]
-## for this area to be drawn.
+## [b]NOTE[/b]: at least this or [member redraw_on_frame] must be set
+## for this area to be drawn automatically.
 @export var redraw_on_physics := false
 
 func _ready() -> void:
