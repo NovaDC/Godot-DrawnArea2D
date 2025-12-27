@@ -14,7 +14,7 @@ extends Area2D
 ## and the edges of the shapes will be drawn using a color with the same
 ## red, green, and blue values, but at maximum opacity (alpha).[br]
 ## This behaviour replicates the drawing done in editor.
-@export var color := Color.BLACK
+@export var color := Color(0,0,0,0.75)
 
 ## When set, only [CollisionShape2D]s/[CollisionPolygon2D]s that aren't
 ## [member CollisionShape2D.disabled]/[member CollisionPolygon2D.disabled]
