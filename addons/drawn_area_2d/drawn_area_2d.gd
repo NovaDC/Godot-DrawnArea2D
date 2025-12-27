@@ -1,3 +1,4 @@
+@tool
 @icon("./icon.svg")
 class_name DrawnArea2D
 extends Area2D
