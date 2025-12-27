@@ -11,8 +11,10 @@ config_version=5
 [application]
 
 config/name="DrawnArea2D"
-config/version="v1.0.0.0"
+config/description="An Area2D node with the ability to draw it's CollisionShape2Ds and CollisionPolygon2Ds outside of a debugging context."
 config/features=PackedStringArray("4.5", "GL Compatibility")
+boot_splash/image="uid://b105taqiorp5n"
+config/icon="uid://ytrmh7nbxnuj"
 
 [rendering]
 
